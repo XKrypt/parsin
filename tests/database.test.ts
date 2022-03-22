@@ -25,7 +25,12 @@ describe("Operations in database.", () => {
 
         expect(database.getSingleData('jest',(data) => data.id == 1)?.data.jest).toEqual("Hi! i am jest!");
     })
-
+    test("Edit data", () => {
+        database.editData("jest",1, {
+            fast : "I am fast now!!"
+        });
+        expect(database.getSingleData('jest',(data) => data.id == 1)?.data.fast).toEqual("I am fast now!!");
+    })
     test("Get multiple data", () =>  {
         database.addData("jest",{
             jest : "Hi! i am jest!"

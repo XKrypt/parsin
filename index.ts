@@ -163,6 +163,18 @@ class Parsim {
         this.saveData(data);
     }
 
+    editData(groupKey:string, dataId:number,newData:any):void{
+
+        let group:DataGroup|undefined = this.getGroup(groupKey) || { key: "", idCount: 0, data: [] };;
+        
+        for (let index = 0; index < group?.data.length; index++) {
+            if (group.data[index].id == dataId) {
+                group.data[index].data = newData;
+                this.replaceGroup(groupKey,group);
+            }
+            
+        }
+    }
     
     getMultipleData(groupKey:string, dataPredicate: (value: DataBox, key: number) => unknown):DataBox[]|undefined{
         let data: DataBase = this.getDataBase();
