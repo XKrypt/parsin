@@ -19,6 +19,8 @@ class Parsim {
         }
     }
 
+
+    //create file if don´t exist
     private initialize(){
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath,JSON.stringify(
@@ -47,20 +49,20 @@ class Parsim {
 
 
     //Get single data from a group
-    getData(groupKey: string, dataPredicate:  (value: any) => unknown): any {
+    getSingleData(groupKey: string, dataPredicate:  (value: DataBox) => unknown): DataBox | undefined {
 
         //Load data
         let data: DataBase = this.getDataBase();
         //Find group
-        let groups: DataGroup | undefined = data.groups.find(x => x.key == groupKey)
-            || { key: "", idCount: 0, data: [], isCounting: false };
+        let groups: DataGroup | undefined = data.groups.find(x => x.key == groupKey) || 
+        { key: "", idCount: 0, data: []};
 
 
-        //Loop trough group and find data 
-        for (let index = 0; index < groups?.data.length; index++) {
-            const data:DataGroup[] = groups?.data[index];
-            if (dataPredicate(data)) {
-                return data;
+        //Find data in the group
+        for (let index = 0; index < groups.data.length; index++) {
+            const dataBox:DataBox = groups.data[index];
+            if (dataPredicate(dataBox)) {
+                return dataBox;
             }
         }
     }
@@ -85,14 +87,19 @@ class Parsim {
         return data.groups.find(x => x.key == key);
     }
 
+    getMultipleGroups(groupPredicate: (value: DataGroup, key: number) => unknown): DataGroup[] | undefined {
+        let data: DataBase = this.getDataBase();
+
+        return data.groups.filter(groupPredicate) || [];
+    }
+
     //Add new group
-    addGroup(key: string, options: GroupOptions = { idCount: 0, isCounting: false, }): void {
+    addGroup(key: string, startCount:number = 0): void {
         let data: DataBase = this.getDataBase();
 
         let newGroup: DataGroup = {
             key: key,
-            idCount: options?.idCount || 0,
-            isCounting: options?.isCounting || false,
+            idCount: startCount,
             data: []
         }
 
@@ -103,7 +110,7 @@ class Parsim {
     }
 
 
-    //Add data to a group
+    
     addData(groupKey: string, value: any): void {
 
         let dataBase: DataBase = this.getDataBase();
@@ -111,12 +118,18 @@ class Parsim {
 
         //Find group
         let group: DataGroup | undefined = dataBase.groups.find(x => x.key == groupKey)
-            || { key: "", idCount: 0, data: [], isCounting: false };
+            || { key: "", idCount: 0, data: []};
 
-        group.data.push(value);
+        //increase counting to be used in id
+        group.idCount++;
+
+        group.data.push({
+            data : value,
+            id : group.idCount
+        });
 
         for (let index = 0; index < dataBase.groups.length; index++) {
-            if (this.data.groups[index].key == group.key) {
+            if (dataBase.groups[index].key == group.key) {
                 dataBase.groups[index] = group;
             }
         }
@@ -125,7 +138,7 @@ class Parsim {
     }
 
 
-    //Replace a group
+  
     replaceGroup(groupKey: string, group: DataGroup): void {
         let dataBase: DataBase = this.getDataBase();
 
@@ -138,37 +151,40 @@ class Parsim {
     }
 
 
-    //Removes a group
-    filterGroup(predicate: (value: DataGroup, index: number, array: DataGroup[]) => unknown): void {
+
+    removeGroup(predicate: (value: DataGroup) => unknown): void {
 
         let data: DataBase = this.getDataBase();
 
-        data.groups = data.groups.filter(predicate);
+        data.groups = data.groups.filter((value, index) => {
+            return !predicate(value);
+        });
 
         this.saveData(data);
     }
 
-    removeGroup(groupKey:string): void {
-
+    
+    getMultipleData(groupKey:string, dataPredicate: (value: DataBox, key: number) => unknown):DataBox[]|undefined{
         let data: DataBase = this.getDataBase();
-
-        data.groups = data.groups.filter(value => value.key != groupKey);
-
-        this.saveData(data);
+        return  data.groups.find(group => group.key == groupKey)?.data.filter(dataPredicate) || [];
     }
 
+    getAllData(groupKey:string):any[]|undefined{
+        let data: DataBase = this.getDataBase();
+        return  data.groups.find(group => group.key == groupKey)?.data;
+    }
 
-    //Remove data
-    removeData(groupKey: string, dataPredicate: (value: any, key: number) => unknown): void {
+    
+    removeData(groupKey: string, dataPredicate: (value: DataBox) => unknown): void {
 
         //Load data
         let data: DataBase = this.getDataBase();
         //Find group
         let group: DataGroup | undefined = data.groups.find(x => x.key == groupKey)
-            || { key: "", idCount: 0, data: [], isCounting: false };
+            || { key: "", idCount: 0, data: [] };
 
         group.data = group.data.filter((value, key) => {
-            return !dataPredicate(value, key);
+            return !dataPredicate(value);
         })
 
         this.replaceGroup(group.key, group);
@@ -180,16 +196,14 @@ interface DataBase {
     groups: DataGroup[]
 }
 
-type GroupOptions = {
-    idCount: number,
-    isCounting: boolean,
+type DataBox = {
+    id : number,
+    data : any
 }
-
 type DataGroup = {
     key: string
     idCount: number,
-    isCounting: boolean,
-    data: any[]
+    data: DataBox[]
 }
 
 export default Parsim;
