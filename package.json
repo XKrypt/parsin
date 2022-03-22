@@ -1,5 +1,5 @@
 {
-  "name": "parsim",
+  "name": "parsin",
   "version": "1.0.0",
   "description": "small and simple database based on json.",
   "main": "index.js",
