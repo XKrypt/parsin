@@ -14,10 +14,6 @@ sin  : *simplicibus*
 
 Parsin salva os dados em grupos, dentro do banco de dados ele cria um grupo onde seus dados serão guardados, cada dado é salvo dentro de uma caixa que chamamos de DataBox, dentro do DataBox é salvo o dado e uma id.
 
-//colocar Imagem
-
-
-
 ##### Group
 
 Seus **DataBox** são salvos dentro dos grupos, sua estrutura é como no exemplo abaixo :
