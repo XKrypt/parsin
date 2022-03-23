@@ -107,7 +107,6 @@ export class Parsin {
         return data;
     }
 
-    //
     /**
      * Get a group
      * @param key 
@@ -119,6 +118,11 @@ export class Parsin {
         return data.groups.find(x => x.key == key);
     }
 
+    /**
+     * Get a multiple groups
+     * @param groupPredicate 
+     * @returns `DataGroup[] | undefined`
+     */
     getMultipleGroups(groupPredicate: (value: DataGroup, key: number) => unknown): DataGroup[] | undefined {
         let data: DataBase = this.getDataBase();
 
@@ -145,6 +149,11 @@ export class Parsin {
         this.saveData(data);
     }
 
+    /**
+     * Add a data to a group
+     * @param groupKey 
+     * @param value
+     */
     addData(groupKey: string, value: any): void {
 
         let dataBase: DataBase = this.getDataBase();
@@ -171,6 +180,11 @@ export class Parsin {
         this.saveData(dataBase);
     }
 
+    /**
+     * Replace a group
+     * @param groupKey 
+     * @param group 
+     */
     replaceGroup(groupKey: string, group: DataGroup): void {
         let dataBase: DataBase = this.getDataBase();
 
@@ -182,6 +196,10 @@ export class Parsin {
         this.saveData(dataBase);
     }
 
+    /**
+     * Remove a group
+     * @param predicate 
+     */
     removeGroup(predicate: (value: DataGroup) => unknown): void {
 
         let data: DataBase = this.getDataBase();
@@ -193,6 +211,12 @@ export class Parsin {
         this.saveData(data);
     }
 
+    /**
+     * Edit a data from a group
+     * @param groupKey 
+     * @param dataId 
+     * @param newData 
+     */
     editData(groupKey: string, dataId: number, newData: any): void {
 
         let group: DataGroup | undefined = this.getGroup(groupKey) || { key: "", idCount: 0, data: [] };;
@@ -206,17 +230,32 @@ export class Parsin {
         }
     }
 
+    /**
+     * Get a multiples datas
+     * @param groupKey 
+     * @param dataPredicate 
+     * @returns `DataBox[] | undefined`
+     */
     getMultipleData(groupKey: string, dataPredicate: (value: DataBox, key: number) => unknown): DataBox[] | undefined {
         let data: DataBase = this.getDataBase();
         return data.groups.find(group => group.key == groupKey)?.data.filter(dataPredicate) || [];
     }
 
+    /**
+     * Get all data from a group
+     * @param groupKey 
+     * @returns `any[] | undefined`
+     */
     getAllData(groupKey: string): any[] | undefined {
         let data: DataBase = this.getDataBase();
         return data.groups.find(group => group.key == groupKey)?.data;
     }
 
-
+    /**
+     * Remove a data from a group
+     * @param groupKey 
+     * @param dataPredicate 
+     */
     removeData(groupKey: string, dataPredicate: (value: DataBox) => unknown): void {
 
         //Load data
