@@ -27,13 +27,13 @@ exports.Parsin = void 0;
 const fs = __importStar(require("fs"));
 class Parsin {
     constructor(filePath, loadDataInMemory = false, encoding = 'utf-8') {
-        this.encondig = 'utf8';
+        this.enconding = 'utf8';
         this.data = {
             groups: []
         };
         this.filePath = filePath;
         this.loadDataInMemory = loadDataInMemory;
-        this.encondig = encoding;
+        this.enconding = encoding;
         this.initialize();
         if (loadDataInMemory) {
             this.loadInMemory(encoding);
@@ -57,6 +57,7 @@ class Parsin {
     saveData(data) {
         let dataJson = JSON.stringify(data);
         fs.writeFileSync(this.filePath, dataJson);
+        this.reloadDataFromFile();
     }
     //Get single data from a group
     getSingleData(groupKey, dataPredicate) {
@@ -76,7 +77,7 @@ class Parsin {
     //Reload data from file, Warning : only work if loadInMemory is true
     reloadDataFromFile() {
         if (this.loadDataInMemory) {
-            this.loadInMemory(this.encondig);
+            this.loadInMemory(this.enconding);
         }
     }
     getDataBase() {

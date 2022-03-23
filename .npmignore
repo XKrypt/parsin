@@ -1,7 +1,8 @@
 # .npmignore
 node_modules
 tests
-vscode
+.vscode
 jest.config.js
 tsconfig.json
 yarn.lock
+yarn-error.log

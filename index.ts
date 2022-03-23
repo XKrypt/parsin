@@ -3,7 +3,7 @@ import * as fs from 'fs';
 export class Parsin {
     filePath: string
     loadDataInMemory: boolean
-    encondig: BufferEncoding = 'utf8'
+    enconding: BufferEncoding = 'utf8'
     data: DataBase = {
         groups: []
     }
@@ -11,7 +11,7 @@ export class Parsin {
     constructor(filePath: string, loadDataInMemory: boolean = false, encoding: BufferEncoding = 'utf-8') {
         this.filePath = filePath;
         this.loadDataInMemory = loadDataInMemory;
-        this.encondig = encoding;
+        this.enconding = encoding;
         this.initialize();
 
         if (loadDataInMemory) {
@@ -45,6 +45,9 @@ export class Parsin {
         let dataJson:string = JSON.stringify(data);
 
         fs.writeFileSync(this.filePath,dataJson);
+
+     
+            this.reloadDataFromFile();
     }
 
 
@@ -70,7 +73,7 @@ export class Parsin {
     //Reload data from file, Warning : only work if loadInMemory is true
     reloadDataFromFile():void{
         if (this.loadDataInMemory) {
-            this.loadInMemory(this.encondig);
+            this.loadInMemory(this.enconding);
         }
     }
 
