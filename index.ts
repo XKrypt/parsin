@@ -233,3 +233,5 @@ export class Parsin {
     }
 
 }
+
+export default Parsin;
