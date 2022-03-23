@@ -2,7 +2,7 @@
 
 ### Português
 
-Parsin é uma mini banco de dados  no mesmo estilo do sqlite onde cria um arquivo para salvar dados localmente porém utiliza json, foi feito para ser utilizado em aplicações que guardam dados de configurações localmente, parsin é simples e pequeno, o nome foi escolhido do latim *parvis et simplicibus* (Pequeno e simples) .
+Parsin é um mini banco de dados  no mesmo estilo do sqlite onde cria um arquivo para salvar dados localmente porém utiliza json, foi feito para ser utilizado em aplicações que guardam dados de configurações  localmente ou coisas pequenas, parsin é simples e pequeno, o nome foi escolhido do latim *parvis et simplicibus* (Pequeno e simples) .
 
 Par  : *parvis*, 
 
@@ -53,6 +53,16 @@ Seus dados são salvos dentro de um tipo chamado **DataBox**, sua estrutura é c
 ##### Instalando
 
 `npm install parsin`
+
+##### Importação
+
+###### Require
+
+`const {parsin} = require('parsin')`;
+
+###### Import
+
+`import {Parsin} from Parsin`
 
 ##### Inicializando
 
@@ -118,7 +128,7 @@ Para editar um dado é necessário saber sua `id` , e o nome do grupo de dados.
 
 ##### Removendo dados
 
-Como no exemplo acima basta passar o nome do grupo, porém utilizara uma arrow function como segundo parâmetro para assim selecionar o dado a ser excluído.
+Como no exemplo acima basta passar uma arrow function como segundo parâmetro para assim selecionar o dado a ser excluído.
 
 
 
@@ -174,7 +184,7 @@ Você pode também remover um ou vários grupos de dados, lembrando que todos os
 
 
 
-***coming soon***
+**coming soon**
 
 
 
@@ -182,7 +192,7 @@ Você pode também remover um ou vários grupos de dados, lembrando que todos os
 
 
 
-### 
+
 
 
 

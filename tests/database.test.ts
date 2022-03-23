@@ -1,13 +1,13 @@
 import fs from 'fs';
-import Parsim from '../';
+import Parsin from '../';
 
 test("Expected to create a file", () => {
-    const database = new Parsim("database.json",true,'utf8');
+    const database = new Parsin("database.json",true,'utf8');
     expect(fs.existsSync("database.json")).toEqual(true);
 })
 
 describe("Operations in database.", () => {
-    const database = new Parsim("database.json",true,'utf8');
+    const database = new Parsin("database.json",true,'utf8');
 
     test("Add new group", () => {
         database.addGroup("jest");

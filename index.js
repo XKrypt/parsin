@@ -23,8 +23,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Parsin = void 0;
 const fs = __importStar(require("fs"));
-class Parsim {
+class Parsin {
     constructor(filePath, loadDataInMemory = false, encoding = 'utf-8') {
         this.encondig = 'utf8';
         this.data = {
@@ -135,6 +136,16 @@ class Parsim {
         });
         this.saveData(data);
     }
+    editData(groupKey, dataId, newData) {
+        let group = this.getGroup(groupKey) || { key: "", idCount: 0, data: [] };
+        ;
+        for (let index = 0; index < (group === null || group === void 0 ? void 0 : group.data.length); index++) {
+            if (group.data[index].id == dataId) {
+                group.data[index].data = newData;
+                this.replaceGroup(groupKey, group);
+            }
+        }
+    }
     getMultipleData(groupKey, dataPredicate) {
         var _a;
         let data = this.getDataBase();
@@ -157,4 +168,4 @@ class Parsim {
         this.replaceGroup(group.key, group);
     }
 }
-exports.default = Parsim;
+exports.Parsin = Parsin;

@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-class Parsim {
+export class Parsin {
     filePath: string
     loadDataInMemory: boolean
     encondig: BufferEncoding = 'utf8'
@@ -218,4 +218,3 @@ type DataGroup = {
     data: DataBox[]
 }
 
-export default Parsim;

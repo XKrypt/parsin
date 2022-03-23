@@ -2,3 +2,6 @@
 node_modules
 tests
 vscode
+jest.config.js
+tsconfig.json
+yarn.lock
