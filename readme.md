@@ -2,9 +2,11 @@
 
 Parsin é um mini banco de dados  no mesmo estilo do SQLite, onde cria um arquivo para salvar dados localmente, porém utilizando JSON. Foi feito para ser utilizado em aplicações que guardam localmente dados de configuração ou pequenas informações. Parsin é simples e pequeno, o nome foi escolhido do latim _**parvis et simplicibus**_ (Pequeno e simples) .
 
-Par: *parvis*, 
+>Par: *parvis*, 
+>
+>sin: *simplicibus*
 
-sin: *simplicibus*
+---
 
 ## Como funciona?
 
@@ -13,7 +15,7 @@ Parsin salva os dados em grupos. Dentro do banco de dados, ele cria um grupo ond
 ### Group
 
 Seus **DataBox** são salvos dentro dos grupos, sua estrutura é como no exemplo abaixo:
-```json
+```yml
 {
   key: string,
   idCount: number,
@@ -25,12 +27,14 @@ Seus **DataBox** são salvos dentro dos grupos, sua estrutura é como no exemplo
 
 Seus dados são salvos dentro de um tipo chamado **DataBox**, sua estrutura é como no exemplo abaixo:
 
-```json
+```yml
 {
   id: number,
   data: any
 }
 ```
+
+---
 
 ## Instalando
 
@@ -156,6 +160,8 @@ replaceGroup('nome do grupo',{
   data: []
 })
 ```
+
+---
 
 ## Other languages:
 Coming soon
