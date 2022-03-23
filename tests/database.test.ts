@@ -1,8 +1,8 @@
 import fs from 'fs';
-import Parsin from '../';
+import { Parsin } from '../';
 
 test("Expected to create a file", () => {
-    const database = new Parsin("database.json",true,'utf8');
+    new Parsin("database.json",true,'utf8');
     expect(fs.existsSync("database.json")).toEqual(true);
 })
 
