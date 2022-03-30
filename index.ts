@@ -3,12 +3,21 @@ import * as fs from 'fs';
 import {
     DataBase,
     DataBox,
-    DataGroup
+    DataGroup,
+    Filter,
+    DataEvent,
+    FilterDataFunction,
+    DataManipulator,
+    Manipulation
 } from './types/data';
 
 export class Parsin {
     filePath: string
     loadDataInMemory: boolean
+    useDataFilters : boolean
+    useDataManipulation : boolean
+    manipulations : Manipulation[] = []
+    filters : Filter[] = []
     encoding: BufferEncoding = 'utf8'
     data: DataBase = {
         groups: []
@@ -20,10 +29,12 @@ export class Parsin {
      * @param loadDataInMemory Load all data in the memory
      * @param encoding Encoding type
      */
-    constructor(filePath: string, loadDataInMemory: boolean = false, encoding: BufferEncoding = 'utf-8') {
+    constructor(filePath: string, loadDataInMemory: boolean = false, encoding: BufferEncoding = 'utf-8', useDataFilters:boolean = false, useDataManipulation = false) {
         this.filePath = filePath;
         this.loadDataInMemory = loadDataInMemory;
         this.encoding = encoding;
+        this.useDataManipulation = useDataManipulation
+        this.useDataFilters = useDataFilters
         this.initialize();
 
         if (loadDataInMemory) {
@@ -82,6 +93,9 @@ export class Parsin {
         let groups: DataGroup | undefined = data.groups.find(x => x.key == groupKey) ||
             { key: "", idCount: 0, data: [] };
 
+            if (groups.key == "") {
+                return undefined;
+            }
 
         //Find data in the group
         for (let index = 0; index < groups.data.length; index++) {
@@ -90,6 +104,8 @@ export class Parsin {
                 return dataBox;
             }
         }
+
+        return undefined;
     }
 
     /**
@@ -99,6 +115,26 @@ export class Parsin {
         if (this.loadDataInMemory) {
             this.loadInMemory(this.encoding);
         }
+    }
+
+    /**
+     * Add data filter
+     * @param filter 
+     * @returns `void`
+     */
+    addFilter(filter:Filter):void{
+        this.filters.push(filter);
+    }
+
+
+
+    /**
+     * Add data manipulator
+     * @param manipulation 
+     * @returns `void`
+     */
+    addManipulation(manipulation:Manipulation):void{
+        this.manipulations.push(manipulation);
     }
 
     private getDataBase(): DataBase {
@@ -166,18 +202,37 @@ export class Parsin {
         //increase counting to be used in id
         group.idCount++;
 
+        if (this.useDataManipulation && this.manipulations.filter(manipulation => manipulation.group == groupKey).length > 0) {
+            value = this.manipulations.find(x => x.event == DataEvent.OnAddData && x.group == groupKey)?.function(value)
+        }
+        
+        if (this.useDataFilters && this.filters.filter(filter => filter.group == groupKey).length > 0) {
+
+
+            for (let index = 0; index < this.filters.length; index++) {
+                const filter = this.filters[index];
+                if (filter.event == DataEvent.OnAddData && filter.group == groupKey) {
+                    if (!filter.function(value)) {
+                        return
+                    }
+                }
+                
+            }
+            group.data.push({
+                data: value,
+                id: group.idCount
+            });
+            return
+        }
+
         group.data.push({
             data: value,
             id: group.idCount
         });
 
-        for (let index = 0; index < dataBase.groups.length; index++) {
-            if (dataBase.groups[index].key == group.key) {
-                dataBase.groups[index] = group;
-            }
-        }
+        this.replaceGroup(groupKey,group);
 
-        this.saveData(dataBase);
+        
     }
 
     /**
@@ -219,7 +274,25 @@ export class Parsin {
      */
     editData(groupKey: string, dataId: number, newData: any): void {
 
-        let group: DataGroup | undefined = this.getGroup(groupKey) || { key: "", idCount: 0, data: [] };;
+        let group: DataGroup | undefined = this.getGroup(groupKey) || { key: "", idCount: 0, data: [] };
+        
+        if (this.useDataManipulation &&  this.manipulations.filter(manipulation => manipulation.group == groupKey).length > 0) {
+            newData = this.manipulations.find(x => x.event == DataEvent.OnEditData && x.group == groupKey)?.function(newData)
+        }
+        
+        if (this.useDataFilters &&  this.filters.filter(filter => filter.group == groupKey).length > 0) {
+
+
+            for (let index = 0; index < this.filters.length; index++) {
+                const filter = this.filters[index];
+                if (filter.event == DataEvent.OnEditData && filter.group == groupKey) {
+                    if (!filter.function(newData)) {
+                        return
+                    }
+                }
+                
+            }
+        }
 
         for (let index = 0; index < group?.data.length; index++) {
             if (group.data[index].id == dataId) {

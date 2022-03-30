@@ -1,6 +1,6 @@
 {
   "name": "parsin",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "small and simple database based on json.",
   "main": "index.js",
   "scripts": {
