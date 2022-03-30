@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Parsin } from '../';
+import { Parsin } from '..';
 
 describe("Manipulate the file", () => {
     test("Expected to create a file", () => {
@@ -14,12 +14,7 @@ describe("Operations in database.", () => {
     });
     
     afterEach(() => {
-        fs.rm("database.json", (err) => {
-            if(err){
-                console.error(err.message);
-                return;
-            }
-        });
+        fs.rmSync("database.json");
     });
 
     const database = new Parsin("database.json", true, 'utf8');
