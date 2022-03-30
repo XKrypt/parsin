@@ -1,3 +1,6 @@
+## Other Languages
+### [English](#english)
+
 # Parsin
 
 Parsin é um mini banco de dados  no mesmo estilo do SQLite, onde cria um arquivo para salvar dados localmente, porém utilizando JSON. Foi feito para ser utilizado em aplicações que guardam localmente dados de configuração ou pequenas informações. Parsin é simples e pequeno, o nome foi escolhido do latim _**parvis et simplicibus**_ (Pequeno e simples) .
@@ -261,11 +264,12 @@ replaceGroup('nome do grupo',{
 
 # Other languages:
 
-## English
+# English
 
-<br /> <br />
+<br />
 
-# Parsin
+
+# Parsin 
 
 Parsin is a mini database in the same style as SQLite, where it creates a file to save data locally, but using JSON. It was made to be used in applications that store configuration data or small information locally. Parsin is simple and small, the name was chosen from the Latin _**parvis et simplicibus**_ (Small and simple).
 
