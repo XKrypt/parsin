@@ -195,6 +195,7 @@ database.addFilter({
 database.editaData("jest",1,"jest","im not fine");
 ```
 
+
 ### Manipulação de dados
 Você pode manipular os dados antes de adiciona-los ou edita-los, funciona como os filtros a diferença é que você vai alterar o dado antes de inseri-lo ou edita-lo. As manipulações são feitas antes de passar pelos filtros.
 
@@ -237,6 +238,16 @@ database.addManipulation({
 database.addData("jest","im fine");
 database.editData("jest",1,"im not fine");
 //O resultado será "im not fine, and i need coffe."
+```
+
+#### **Observação** : Tanto para os filtros como para os manipuladores é necessario importar o ``DataEvent``.
+
+```js
+const {DataEvent} = require('parsin/types/data');
+
+//Ou
+
+import {DataEvent} from 'parsin/types/data'
 ```
 ### Outras funções
 
@@ -507,6 +518,15 @@ database.editData("jest",1,"im not fine");
 //The result will be "im not fine, and i need coffe."
 ```
 
+#### **Note**: For both filters and manipulators it is necessary to import the ``DataEvent``.
+
+```js
+const {DataEvent} = require('parsin/types/data');
+
+//Or
+
+import {DataEvent} from 'parsin/types/data'
+```
 ### Other functions
 
 #### Select a data group
